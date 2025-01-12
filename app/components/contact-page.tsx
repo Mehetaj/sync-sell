@@ -16,19 +16,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center p-8">
-      {/* Logo Section */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="pt-8 mb-12"
-      >
-        <Link href="/">
-          <h1 className="text-7xl font-metal tracking-[0.15em] text-center relative">
-            <span className="absolute -inset-1 blur-sm opacity-30">SynC</span>
-            SynC
-          </h1>
-        </Link>
-      </motion.div>
 
       {/* Contact Form Section */}
       <motion.div

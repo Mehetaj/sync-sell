@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
@@ -20,7 +20,7 @@ export default function PageTransition({
     const timer = setTimeout(() => {
       setDisplayChildren(children)
       setIsLoading(false)
-    }, 3000) // 3 second delay
+    }, 2000) // 3 second delay
 
     return () => clearTimeout(timer)
   }, [pathname, children])

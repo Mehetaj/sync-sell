@@ -10,7 +10,7 @@ export default function HomePage() {
     { name: "SHOP", href: "/shop" },
     { name: "CATALOG", href: "/catalog" },
     { name: "CONTACT", href: "/contact" },
-    { name: "LAUNDAAH", href: "/laundaah" },
+    { name: "NEW ARRIVALS", href: "/new-arrivals" },
     { name: "PRE ORDER", href: "/pre-order" }
   ]
 
