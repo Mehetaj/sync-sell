@@ -1,4 +1,4 @@
-import EyeLoader from "./components/eye-loading";
+import EyeLoader from "../components/eye-loading";
 
 
 export default function Loading() {

@@ -1,5 +1,5 @@
 import { DollarSign, ShoppingBag, Users, TrendingUp } from 'lucide-react'
-import { StatsCard } from '../components/stats-card'
+import { StatsCard } from '../../components/stats-card'
 
 export default function DashboardPage() {
   return (

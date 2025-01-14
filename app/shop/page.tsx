@@ -1,6 +1,6 @@
 import { products } from "@/lib/products"
-import Marquee from "../components/marquee"
-import ProductCard from "../components/product-card"
+import Marquee from "../../components/marquee"
+import ProductCard from "../../components/product-card"
 
 
 

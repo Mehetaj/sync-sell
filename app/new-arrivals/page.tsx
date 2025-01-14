@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import ProductCard from "../components/product-card"
+import ProductCard from "../../components/product-card"
 
 
 interface Product {
@@ -18,7 +18,7 @@ interface Product {
 
 export default function NewArrivals() {
   // Sample products data - in a real app, this would come from an API
-  const products: Product[] = [
+  const products:Product[] = [
     {
       id: "1",
       name: "DEATH RIDER JACKET",
@@ -112,9 +112,9 @@ export default function NewArrivals() {
           animate="show"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
         >
-          {products.map((product) => (
+          {products.map((product,idx) => (
             <motion.div key={product.id} variants={item}>
-              <ProductCard name={product.name} price={product.price} image={product.image} />
+              <ProductCard key={idx} product={{ ...product, price: product.price.toString() }} />
             </motion.div>
           ))}
         </motion.div>

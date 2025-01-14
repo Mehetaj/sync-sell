@@ -4,8 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import { Plus } from 'lucide-react'
 import { motion } from "framer-motion"
-import { ProductTable } from "@/app/components/product-table"
-import { Pagination } from "@/app/components/pagination"
+import { Pagination } from "@/components/pagination"
+import { ProductTable } from "@/components/product-table"
 
 // Mock data - replace with actual API call
 const mockProducts = Array.from({ length: 12 }, (_, i) => ({

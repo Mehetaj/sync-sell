@@ -1,13 +1,25 @@
-'use client'
+'use client';
 
-import Image from "next/image"
-import { Edit, Trash2 } from 'lucide-react'
-import Link from "next/link"
-import { motion } from "framer-motion"
+import Image from "next/image";
+import { Edit, Trash2 } from 'lucide-react';
+import Link from "next/link";
+import { motion } from "framer-motion";
 
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: string | number;
+  stock: number;
+  image: string;
+}
 
+interface ProductTableProps {
+  products: Product[];
+  onDelete: (id: string) => void;
+}
 
-export function ProductTable({ products, onDelete }: any) {
+export function ProductTable({ products, onDelete }: ProductTableProps) {
   return (
     <div className="bg-white border rounded-lg overflow-hidden">
       <table className="w-full">
@@ -22,8 +34,8 @@ export function ProductTable({ products, onDelete }: any) {
           </tr>
         </thead>
         <tbody className="divide-y">
-          {products.map((product:any) => (
-            <motion.tr 
+          {products.map((product) => (
+            <motion.tr
               key={product.id}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -47,11 +59,13 @@ export function ProductTable({ products, onDelete }: any) {
               <td className="px-6 py-4 text-sm">{product.price}</td>
               <td className="px-6 py-4 text-sm">{product.stock}</td>
               <td className="px-6 py-4">
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  product.stock > 0 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
+                <span
+                  className={`px-2 py-1 text-xs rounded-full ${
+                    product.stock > 0
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}
+                >
                   {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                 </span>
               </td>
@@ -76,6 +90,5 @@ export function ProductTable({ products, onDelete }: any) {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
-
