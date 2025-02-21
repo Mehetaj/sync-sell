@@ -18,10 +18,3 @@ export async function GET(): Promise<NextResponse> {
   return NextResponse.json({ NewArrivals });
 }
 
-// DELETE: Delete a new arrival by ID
-export async function DELETE(request: NextRequest): Promise<NextResponse> {
-  const id = request.nextUrl.searchParams.get("id");
-  await connectToDatabase();
-  await NewArrival.findByIdAndDelete(id);
-  return NextResponse.json({ message: "NewArrival deleted" }, { status: 200 });
-}

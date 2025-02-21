@@ -1,25 +1,21 @@
-import mongoose, { Schema, Document, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
-export interface IProduct extends Document {
-  id: string;
+export interface IPds {
   name: string;
   price: string;
   image: string;
-  description?: string;
-  details?: string[];
-  sizes?: string[];
-  images?: string[];
-  category?: string;
+  description: string;
+  sizes: string[];
+  images: string[];
+  category: string;
 }
 
-const ProductSchema = new Schema<IProduct>(
+const PdsSchema = new Schema<IPds>(
   {
-    id: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    price: { type: String, required: true },
-    image: { type: String, required: true },
+    name: { type: String },
+    price: { type: String },
+    image: { type: String },
     description: { type: String },
-    details: { type: [String] },
     sizes: { type: [String] },
     images: { type: [String] },
     category: { type: String },
@@ -29,7 +25,6 @@ const ProductSchema = new Schema<IProduct>(
   }
 );
 
-const Product =
-  mongoose.models.Product || model<IProduct>("Product", ProductSchema);
+const Pds = mongoose.models.Pds || model<IPds>("Pds", PdsSchema);
 
-export default Product;
+export default Pds;

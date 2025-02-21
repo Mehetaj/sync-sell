@@ -1,20 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useContext, FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { useRouter } from 'next/navigation'
+import { AuthContext } from '@/components/AuthSessionProvider'
+import { toast } from 'react-toastify'
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false,
+  })
   
-  const handleSubmit = async (e: React.FormEvent) => {
+  const router = useRouter()
+  const auth = useContext(AuthContext)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsLoading(false)
+
+    try {
+      await auth?.signIn(formData.email, formData.password)
+      toast.success('Logged in successfully!')
+      router.push('/dashboard') // Redirect to dashboard or wherever you want
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error('Failed to log in. Please check your credentials and try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -45,6 +73,8 @@ export default function LoginPage() {
                   name="email"
                   type="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
                     focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="ENTER YOUR EMAIL"
@@ -65,6 +95,8 @@ export default function LoginPage() {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
+                  value={formData.password}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
                     focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="ENTER YOUR PASSWORD"
@@ -86,12 +118,14 @@ export default function LoginPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <input
-                  id="remember-me"
-                  name="remember-me"
+                  id="rememberMe"
+                  name="rememberMe"
                   type="checkbox"
+                  checked={formData.rememberMe}
+                  onChange={handleChange}
                   className="h-4 w-4 border-black focus:ring-black rounded-none"
                 />
-                <label htmlFor="remember-me" className="font-metal text-sm tracking-wider">
+                <label htmlFor="rememberMe" className="font-metal text-sm tracking-wider">
                   REMEMBER ME
                 </label>
               </div>
@@ -120,7 +154,7 @@ export default function LoginPage() {
             <p className="text-center font-metal text-sm tracking-wider">
               DON&apos;T HAVE AN ACCOUNT?{' '}
               <Link
-                href="/register"
+                href="/auth/register"
                 className="underline hover:opacity-70 transition-opacity"
               >
                 SIGN UP

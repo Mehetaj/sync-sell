@@ -1,20 +1,53 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useContext, FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
+import { AuthContext } from '@/components/AuthSessionProvider'
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  const router = useRouter()
+  const auth = useContext(AuthContext)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsLoading(false)
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords don't match")
+      setIsLoading(false)
+      return
+    }
+
+    try {
+      await auth?.createUser(formData.email, formData.password)
+      // You might want to update the user's display name here
+      // This depends on your Firebase setup and requirements
+      toast.success('Account created successfully!')
+      router.push('/dashboard') // Redirect to dashboard or wherever you want
+    } catch (error) {
+      console.error('Registration error:', error)
+      toast.error('Failed to create account. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -32,45 +65,25 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="first-name" className="block font-metal text-sm tracking-wider mb-2">
-                  FIRST NAME
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiUser className="h-5 w-5" />
-                  </div>
-                  <input
-                    id="first-name"
-                    name="first-name"
-                    type="text"
-                    required
-                    className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
-                      focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="FIRST NAME"
-                  />
+            <div>
+              <label htmlFor="name" className="block font-metal text-sm tracking-wider mb-2">
+                NAME
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FiUser className="h-5 w-5" />
                 </div>
-              </div>
-
-              <div>
-                <label htmlFor="last-name" className="block font-metal text-sm tracking-wider mb-2">
-                  LAST NAME
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiUser className="h-5 w-5" />
-                  </div>
-                  <input
-                    id="last-name"
-                    name="last-name"
-                    type="text"
-                    required
-                    className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
-                      focus:outline-none focus:ring-2 focus:ring-black"
-                    placeholder="LAST NAME"
-                  />
-                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
+                    focus:outline-none focus:ring-2 focus:ring-black"
+                  placeholder="ENTER YOUR NAME"
+                />
               </div>
             </div>
 
@@ -87,6 +100,8 @@ export default function RegisterPage() {
                   name="email"
                   type="email"
                   required
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
                     focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="ENTER YOUR EMAIL"
@@ -107,6 +122,8 @@ export default function RegisterPage() {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
+                  value={formData.password}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
                     focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="CREATE PASSWORD"
@@ -126,7 +143,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="confirm-password" className="block font-metal text-sm tracking-wider mb-2">
+              <label htmlFor="confirmPassword" className="block font-metal text-sm tracking-wider mb-2">
                 CONFIRM PASSWORD
               </label>
               <div className="relative">
@@ -134,10 +151,12 @@ export default function RegisterPage() {
                   <FiLock className="h-5 w-5" />
                 </div>
                 <input
-                  id="confirm-password"
-                  name="confirm-password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 pl-12 border border-black bg-transparent font-metal tracking-wider
                     focus:outline-none focus:ring-2 focus:ring-black"
                   placeholder="CONFIRM PASSWORD"

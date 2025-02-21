@@ -1,48 +1,41 @@
-import { Schema, Document, model, models } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
 export interface IUser extends Document {
   name?: string;
-  email?: string;
-  password?: string; // Ensure hashed passwords are stored
-  role?: "user" | "admin"; // Default to 'user'
+  email: string;
+  password: string; 
+  role?: "user" | "admin"; 
   shippingAddress?: {
     fullName?: string;
     phone?: string;
     addressLine1?: string;
-    addressLine2?: string; // Optional field
+    addressLine2?: string; 
     city?: string;
     state?: string;
     postalCode?: string;
     country?: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
 }
-
-const ShippingAddressSchema = new Schema(
-  {
-    fullName: { type: String },
-    phone: { type: String },
-    addressLine1: { type: String },
-    addressLine2: { type: String }, // Optional
-    city: { type: String },
-    state: { type: String },
-    postalCode: { type: String },
-    country: { type: String },
-  },
-  { _id: false } // Prevents creating an additional ID for subdocuments
-);
 
 const UserSchema = new Schema<IUser>(
   {
     name: { type: String },
-    email: { type: String, unique: true },
-    password: { type: String },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     role: { type: String, enum: ["user", "admin"], default: "user" },
-    shippingAddress: { type: ShippingAddressSchema },
+    shippingAddress: {
+      fullName: { type: String },
+      phone: { type: String },
+      addressLine1: { type: String },
+      addressLine2: { type: String },
+      city: { type: String },
+      state: { type: String },
+      postalCode: { type: String },
+      country: { type: String },
+    },
   },
   {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 

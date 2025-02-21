@@ -1,17 +1,23 @@
 'use client';
 
 import { useState } from "react";
-import { Product } from "@/lib/products";
 import { FaShippingFast, FaCheckCircle, FaRedo } from "react-icons/fa";
 import { ImageGallery } from "@/components/image-gallery";
 import { SizeSelector } from "@/components/size-selector";
 import { QuantityPicker } from "@/components/quantity-picker";
 
-interface ProductDetailsProps {
-  product: Product;
+interface Product {
+  _id: string;
+  name: string;
+  price: string;
+  image: string;
+  description?: string;
+  sizes?: string[];
+  images?: string[];
+  category?: string;
 }
 
-export default function ProductDetails({ product }: ProductDetailsProps) {
+export default function ProductDetails({ product }: any) {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -54,15 +60,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               ADD TO CART
             </button>
 
-            {/* Product Details */}
-            <div className="space-y-6 pt-8 border-t">
-              <h2 className="font-semibold text-xl tracking-wide">PRODUCT DETAILS</h2>
-              <ul className="space-y-2 list-disc pl-5 text-gray-700">
-                {product.details?.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
-            </div>
 
             {/* Shipping Info */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-8 border-t">

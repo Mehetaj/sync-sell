@@ -20,7 +20,7 @@ export default function PageTransition({
     const timer = setTimeout(() => {
       setDisplayChildren(children)
       setIsLoading(false)
-    }, 2000) // 3 second delay
+    }, 500) // 3 second delay
 
     return () => clearTimeout(timer)
   }, [pathname, children])

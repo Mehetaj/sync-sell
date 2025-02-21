@@ -1,11 +1,11 @@
 import mongoose, { Schema, Document, model } from "mongoose";
 
-export interface INewArrival extends Document {
+export interface INewArrival {
   name: string;
   price: string;
-  image: string; 
-  launchDate: string; 
-  category: string; 
+  image: string;
+  launchDate: string;
+  category: string;
 }
 
 const NewArrivalSchema = new Schema<INewArrival>(
@@ -17,7 +17,7 @@ const NewArrivalSchema = new Schema<INewArrival>(
     category: { type: String },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

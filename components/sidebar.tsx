@@ -3,14 +3,15 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, ShoppingBag, Users, Settings, BarChart3, Package, LogOut } from 'lucide-react'
+import { LayoutDashboard, ShoppingBag, Users, Settings, BarChart3, Package, LogOut, ShoppingBasketIcon } from 'lucide-react'
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
   { icon: ShoppingBag, label: 'Products', href: '/dashboard/products' },
   { icon: Users, label: 'Customers', href: '/dashboard/customers' },
   { icon: Package, label: 'Orders', href: '/dashboard/orders' },
-  { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
+  { icon: ShoppingBasketIcon, label: 'New Arrivals', href: '/dashboard/new-arrival' },
+  { icon: BarChart3, label: 'Catalog', href: '/dashboard/catalog' },
   { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
 ]
 

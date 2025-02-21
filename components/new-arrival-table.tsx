@@ -1,25 +1,25 @@
 'use client';
 
-import Image from "next/image";
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { createSlug } from "@/lib/products";
 
-interface Product {
-  id: string;
+export interface INewArrival {
+  _id: string;
   name: string;
-  category: string;
-  price: string | number;
-  stock: number;
+  price: string;
   image: string;
+  launchDate: string;
+  category: string;
 }
 
-interface ProductTableProps {
-  products: Product[];
+interface NewArrivalTableProps {
+  arrivals: INewArrival[];
   onDelete: (id: string) => void;
 }
 
-export function ProductTable({ products, onDelete }: ProductTableProps) {
+const NewArrivalTable = ({ arrivals, onDelete }: NewArrivalTableProps) => {
   return (
     <div className="bg-white border rounded-lg overflow-hidden">
       <table className="w-full">
@@ -28,15 +28,14 @@ export function ProductTable({ products, onDelete }: ProductTableProps) {
             <th className="px-6 py-4 text-left">Product</th>
             <th className="px-6 py-4 text-left">Category</th>
             <th className="px-6 py-4 text-left">Price</th>
-            <th className="px-6 py-4 text-left">Stock</th>
-            <th className="px-6 py-4 text-left">Status</th>
-            <th className="px-6 py-4 text-right">Actions</th>
+            <th className="px-6 py-4 text-left">Launch Date</th>
+            <th className="px-6 py-4 text-left">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y">
-          {products.map((product) => (
+          {arrivals.map((arrival) => (
             <motion.tr
-              key={product.id}
+              key={arrival._id} // Ensure _id is unique
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -45,40 +44,30 @@ export function ProductTable({ products, onDelete }: ProductTableProps) {
               <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 relative">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
+                    <img
+                      src={arrival.image}
+                      alt={arrival.name}
+                      width={48} // Fixed width for responsive image
+                      height={48} // Fixed height for responsive image
                       className="object-cover rounded"
                     />
                   </div>
-                  <span className="font-metal tracking-wider">{product.name}</span>
+                  <span className="font-semibold tracking-wider">{arrival.name}</span>
                 </div>
               </td>
-              <td className="px-6 py-4 text-sm">{product.category}</td>
-              <td className="px-6 py-4 text-sm">{product.price}</td>
-              <td className="px-6 py-4 text-sm">{product.stock}</td>
-              <td className="px-6 py-4">
-                <span
-                  className={`px-2 py-1 text-xs rounded-full ${
-                    product.stock > 0
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
-                  }`}
-                >
-                  {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                </span>
-              </td>
+              <td className="px-6 py-4 text-sm">{arrival.category}</td>
+              <td className="px-6 py-4 text-sm">{arrival.price}</td>
+              <td className="px-6 py-4 text-sm">{arrival.launchDate}</td>
               <td className="px-6 py-4">
                 <div className="flex justify-end gap-3">
                   <Link
-                    href={`/dashboard/products/edit/${product.id}`}
+                    href={`/dashboard/new-arrival/edit/${createSlug(arrival.name)}`}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
                     <Edit size={18} />
                   </Link>
                   <button
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => onDelete(arrival._id)}
                     className="p-2 hover:bg-red-100 rounded-full transition-colors text-red-600"
                   >
                     <Trash2 size={18} />
@@ -91,4 +80,6 @@ export function ProductTable({ products, onDelete }: ProductTableProps) {
       </table>
     </div>
   );
-}
+};
+
+export default NewArrivalTable;

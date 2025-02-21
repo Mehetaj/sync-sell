@@ -1,16 +1,19 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import Navbar from '../components/navbar'
+import type { Metadata } from 'next';
+import './globals.css';
+import Navbar from '../components/navbar';
+import Providers from './store/Providers';
+import AuthProvider from '@/components/AuthSessionProvider';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata: Metadata = {
   title: 'SynC',
   description: 'Death Metal fashion and lifestyle brand',
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -22,8 +25,11 @@ export default function RootLayout({
       </head>
       <body>
         <Navbar />
-        {children}</body>
+        <Providers>
+          <AuthProvider>{children}</AuthProvider>
+        </Providers>
+        <ToastContainer />
+      </body>
     </html>
-  )
+  );
 }
-
