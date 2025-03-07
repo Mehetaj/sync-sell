@@ -36,7 +36,7 @@ export default function LoginPage() {
     try {
       await auth?.signIn(formData.email, formData.password)
       toast.success('Logged in successfully!')
-      router.push('/dashboard') // Redirect to dashboard or wherever you want
+      router.push('/shop') // Redirect to  or wherever you want
     } catch (error) {
       console.error('Login error:', error)
       toast.error('Failed to log in. Please check your credentials and try again.')

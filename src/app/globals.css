@@ -79,3 +79,10 @@ body {
   font-size: 18px;
   color: black;
 }
+
+@layer components {
+  .btn-primary {
+    @apply w-full px-4 py-3 bg-black text-white font-metal tracking-wider 
+           hover:bg-opacity-80 transition-all duration-200;
+  }
+}

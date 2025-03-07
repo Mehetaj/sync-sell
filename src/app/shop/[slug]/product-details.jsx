@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaShippingFast, FaCheckCircle, FaRedo } from "react-icons/fa";
 import { ImageGallery } from "../../../components/image-gallery";
 import { SizeSelector } from "../../../components/size-selector";
 import { QuantityPicker } from "../../../components/quantity-picker";
 import { addToCart } from "../../../app/store/features/cart-slice";
 import { useAppDispatch } from "../../../app/store/hooks";
-
-
+import { AuthContext } from "../../../components/AuthSessionProvider";
 
 export default function ProductDetails({ product }) {
   const dispatch = useAppDispatch();
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const { user } = useContext(AuthContext);
 
   const handleAddToCart = () => {
     if (!selectedSize) {
@@ -24,13 +24,14 @@ export default function ProductDetails({ product }) {
     const cartItem = {
       product_id: product._id,
       name: product.name,
-      price: product.price.toString(), 
-      image: product.image || "", 
-      size: selectedSize || "", 
-      quantity: quantity.toString()
+      price: product.price.toString(),
+      image: product.image || "",
+      size: selectedSize || "",
+      quantity: quantity.toString(),
+      email: user?.email,
     };
 
-
+    // console.log(cartItem);
     dispatch(addToCart(cartItem));
   };
 
@@ -47,8 +48,12 @@ export default function ProductDetails({ product }) {
           <div className="space-y-8">
             {/* Product Info */}
             <div className="space-y-4">
-              <h1 className="font-bold text-4xl tracking-wide">{product.name}</h1>
-              <p className="font-semibold text-2xl text-gray-800">${product.price}</p>
+              <h1 className="font-bold text-4xl tracking-wide">
+                {product.name}
+              </h1>
+              <p className="font-semibold text-2xl text-gray-800">
+                ${product.price}
+              </p>
               <p className="text-gray-600 leading-relaxed">
                 {product.description || "No description available."}
               </p>

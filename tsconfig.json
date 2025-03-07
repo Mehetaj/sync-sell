@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/api/cart/route.js", "src/app/api/catalog/route.s", "src/app/api/contact/route.js", "src/app/api/new-arrival/route.js", "src/app/api/pds/route.js", "src/app/api/user/route.js", "src/app/api/user/[id]/route.s", "src/app/api/pds/[id]/route.js", "src/app/api/new-arrival/[id]/route.js", "src/app/api/contact/[id]/route.js", "src/app/dashboard/catalog/page.jsx", "src/app/dashboard/catalog/add/page.jsx", "src/app/dashboard/catalog/edit/[id]/page.jsx", "src/app/dashboard/new-arrival/page.jsx", "src/app/dashboard/new-arrival/add/page.jsx", "src/app/dashboard/new-arrival/edit/[id]/page.jsx"  ],
+, "src/app/api/cart/route.js", "src/app/api/catalog/route.s", "src/app/api/contact/route.js", "src/app/api/new-arrival/route.js", "src/app/api/pds/route.js", "src/app/api/user/route.js", "src/app/api/user/[id]/route.s", "src/app/api/pds/[id]/route.js", "src/app/api/new-arrival/[id]/route.js", "src/app/api/contact/[id]/route.js", "src/app/dashboard/catalog/page.jsx", "src/app/dashboard/catalog/add/page.jsx", "src/app/dashboard/catalog/edit/[id]/page.jsx", "src/app/dashboard/new-arrival/page.jsx", "src/app/dashboard/new-arrival/add/page.jsx", "src/app/dashboard/new-arrival/edit/[id]/page.jsx", "src/app/api/order/route.js"  ],
   "exclude": [
     "node_modules"
   ]

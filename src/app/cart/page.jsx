@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { FiX, FiShoppingBag } from "react-icons/fi";
 import Image from "next/image";
@@ -7,40 +7,72 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart, removeCartItem } from "../store/features/cart-slice";
 import { QuantityPicker } from "../../components/quantity-picker";
+import { AuthContext } from "../../components/AuthSessionProvider";
 
 export default function CartPage() {
   const dispatch = useDispatch();
   const { items: cartItems, error, status } = useSelector((state) => state.cart);
+  const { user } = useContext(AuthContext); // Get user from AuthContext
+  const userEmail = user?.email; // Get user email
 
-  const [items, setItems] = useState(cartItems || []);
+  const [items, setItems] = useState([]);
 
+  // Load cart from localStorage when component mounts
   useEffect(() => {
-    dispatch(fetchCart());
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setItems(JSON.parse(savedCart));
+    } else {
+      dispatch(fetchCart());
+    }
   }, [dispatch]);
 
   useEffect(() => {
     if (!cartItems || cartItems.length === 0) {
       dispatch(fetchCart());
     } else {
-      setItems(cartItems);
+      // Filter cart items based on user email
+      const filteredItems = cartItems.filter((item) => item.email === userEmail);
+      console.log(filteredItems);
+      setItems(filteredItems);
     }
-  }, [cartItems, dispatch]);
+  }, [cartItems, userEmail, dispatch]);
+
+  // Save cart to localStorage whenever items change
+  useEffect(() => {
+    if (items.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(items));
+    }
+  }, [items]);
 
   if (status === "loading") {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   if (status === "failed") {
-    return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   }
 
   const handleQuantityChange = (id, newQuantity) => {
     setItems((prevItems) =>
-      prevItems.map((item) => (item._id === id ? { ...item, quantity: newQuantity } : item))
+      prevItems.map((item) =>
+        item._id === id ? { ...item, quantity: newQuantity } : item
+      )
     );
   };
 
-  const subtotal = items.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + Number(item.price) * Number(item.quantity),
+    0
+  );
   const shipping = 10.0;
   const total = subtotal + shipping;
 
@@ -53,7 +85,9 @@ export default function CartPage() {
         className="max-w-6xl mx-auto"
       >
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-metal tracking-[0.2em] mb-4">YOUR CART</h1>
+          <h1 className="text-4xl font-metal tracking-[0.2em] mb-4">
+            YOUR CART
+          </h1>
           <div className="h-[2px] w-16 bg-black mx-auto"></div>
         </div>
 
@@ -91,9 +125,18 @@ export default function CartPage() {
 
                   <div className="flex-grow">
                     <div className="flex justify-between items-start">
-                      <h3 className="font-metal tracking-wider">{item.name}</h3>
+                      <h3 className="font-metal tracking-wider">
+                        {item.name} ({item?.size})
+                      </h3>
                       <button
-                        onClick={() => dispatch(removeCartItem(item._id))}
+                        onClick={() => {
+                          dispatch(removeCartItem(item._id));
+                          setItems(items.filter((i) => i._id !== item._id)); // Remove from local state
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify(items.filter((i) => i._id !== item._id))
+                          );
+                        }}
                         className="p-1 hover:opacity-70 transition-opacity"
                         aria-label={`Remove ${item.name} from cart`}
                       >
@@ -101,7 +144,9 @@ export default function CartPage() {
                       </button>
                     </div>
 
-                    <p className="font-metal tracking-wider mt-2">${Number(item.price)?.toFixed(2)}</p>
+                    <p className="font-metal tracking-wider mt-2">
+                      ${Number(item.price)?.toFixed(2)}
+                    </p>
 
                     <QuantityPicker
                       initialQuantity={Number(item?.quantity)}
@@ -114,7 +159,9 @@ export default function CartPage() {
 
             <div className="md:col-span-1">
               <div className="border border-black p-6 space-y-6">
-                <h2 className="font-metal tracking-wider text-xl mb-6">ORDER SUMMARY</h2>
+                <h2 className="font-metal tracking-wider text-xl mb-6">
+                  ORDER SUMMARY
+                </h2>
 
                 <div className="space-y-4">
                   <div className="flex justify-between font-metal tracking-wider">
@@ -137,9 +184,9 @@ export default function CartPage() {
 
                 <button
                   onClick={() => console.log("Proceeding to checkout with", items)}
-                  className="w-full px-4 py-3 bg-black text-white font-metal tracking-wider hover:bg-opacity-80 transition-all duration-200"
+                  className="btn-primary"
                 >
-                  CHECKOUT
+                  <Link href="/checkout">CHECKOUT</Link>
                 </button>
 
                 <Link

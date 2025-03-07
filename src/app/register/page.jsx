@@ -41,7 +41,7 @@ export default function RegisterPage() {
       // You might want to update the user's display name here
       // This depends on your Firebase setup and requirements
       toast.success('Account created successfully!')
-      router.push('/dashboard') // Redirect to dashboard or wherever you want
+      router.push('/shop') // Redirect to / or wherever you want
     } catch (error) {
       console.error('Registration error:', error)
       toast.error('Failed to create account. Please try again.')

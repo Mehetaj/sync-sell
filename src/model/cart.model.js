@@ -4,12 +4,13 @@ const { Schema, model, models } = mongoose;
 
 const CartSchema = new Schema(
   {
-    product_id: { type: String },
+    product_id: { type: String, },
     name: { type: String },
     price: { type: String },
     image: { type: String },
     size: { type: String },
     quantity: { type: String },
+    email: { type: String },
   },
   {
     timestamps: true,
