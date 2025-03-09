@@ -16,8 +16,8 @@ const initialState = {
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
-    const response = await axios.get("/api/pds"); // Update API endpoint
-    return response.data.Pdss; // Update to use 'Pdss' instead of 'products'
+    const response = await axios.get("/api/pds");
+    return response.data.Pdss;
   }
 );
 

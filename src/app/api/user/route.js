@@ -13,6 +13,6 @@ export async function POST(request) {
 // GET: Retrieve all users
 export async function GET() {
   await connectToDatabase();
-  const Users = await User.find();
-  return NextResponse.json({ Users });
+  const users = await User.find();
+  return NextResponse.json({ users });
 }

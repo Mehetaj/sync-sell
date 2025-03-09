@@ -5,12 +5,11 @@ const ItemSchema = new Schema(
     product_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
-      required: true,
     },
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    price: { type: Number, required: true },
-    quantity: { type: Number, required: true },
+    name: { type: String },
+    email: { type: String },
+    price: { type: Number },
+    quantity: { type: Number },
     size: { type: String },
     image: { type: String },
   },
@@ -19,18 +18,22 @@ const ItemSchema = new Schema(
 
 const OrderSchema = new Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    zip: { type: String, required: true },
+    name: { type: String },
+    email: { type: String },
+    address: { type: String },
+    city: { type: String },
+    zip: { type: String },
     items: [ItemSchema],
     paymentMethod: {
       type: String,
-      required: true,
       enum: ["cash", "credit-card", "paypal"],
     },
-    total: { type: Number, required: true },
+    total: { type: Number },
+    status: {
+      type: String,
+      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );

@@ -14,7 +14,7 @@ const initialState = {
 export const fetchNewArrivals = createAsyncThunk(
   "new-arrivals/fetchNewArrivals",
   async () => {
-    const response = await axios.get("http://localhost:3000/api/new-arrival");
+    const response = await axios.get("/api/new-arrival");
     return response.data.NewArrivals;
   }
 );
@@ -22,8 +22,8 @@ export const fetchNewArrivals = createAsyncThunk(
 export const addNewArrival = createAsyncThunk(
   "new-arrivals/addNewArrival",
   async (newArrival) => {
-    await axios.post("http://localhost:3000/api/new-arrival", newArrival);
-    const response = await axios.get("http://localhost:3000/api/new-arrival");
+    await axios.post("/api/new-arrival", newArrival);
+    const response = await axios.get("/api/new-arrival");
     return response.data.NewArrivals;
   }
 );
@@ -32,10 +32,10 @@ export const editNewArrival = createAsyncThunk(
   "new-arrivals/edit-new-arrival",
   async ({ updatedArrival, id }) => {
     await axios.patch(
-      `http://localhost:3000/api/new-arrival/${id}`,
+      `/api/new-arrival/${id}`,
       updatedArrival
     );
-    const response = await axios.get("http://localhost:3000/api/new-arrival");
+    const response = await axios.get("/api/new-arrival");
     return response.data.NewArrivals;
   }
 );
@@ -43,8 +43,8 @@ export const editNewArrival = createAsyncThunk(
 export const deleteNewArrival = createAsyncThunk(
   "new-arrivals/delete-new-arrival",
   async (id) => {
-    await axios.delete(`http://localhost:3000/api/new-arrival/${id}`);
-    const response = await axios.get("http://localhost:3000/api/new-arrival");
+    await axios.delete(`/api/new-arrival/${id}`);
+    const response = await axios.get("/api/new-arrival");
     return response.data.NewArrivals;
   }
 );

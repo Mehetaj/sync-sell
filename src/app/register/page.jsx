@@ -1,54 +1,57 @@
-'use client'
+"use client";
 
-import { useState, useContext } from 'react'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
-import { AuthContext } from '../../components/AuthSessionProvider'
+import { useState, useContext } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../components/AuthSessionProvider";
+import { useDispatch } from "react-redux";
+import { addUser } from "../store/features/user-slice";
 
 export default function RegisterPage() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const auth = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
-  const router = useRouter()
-  const auth = useContext(AuthContext)
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
+    e.preventDefault();
+    setIsLoading(true);
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords don't match")
-      setIsLoading(false)
-      return
+      toast.error("Passwords do not match");
+      setIsLoading(false);
+      return;
     }
 
     try {
-      await auth?.createUser(formData.email, formData.password)
-      // You might want to update the user's display name here
-      // This depends on your Firebase setup and requirements
-      toast.success('Account created successfully!')
-      router.push('/shop') // Redirect to / or wherever you want
+      await auth?.createUser(formData.email, formData.password);
+      await dispatch(addUser(formData));
+      toast.success("Account created successfully!");
+      router.push("/shop");
     } catch (error) {
-      console.error('Registration error:', error)
-      toast.error('Failed to create account. Please try again.')
+      console.error("Registration error:", error);
+      toast.error("Failed to create an account. Try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-white">
@@ -60,13 +63,18 @@ export default function RegisterPage() {
       >
         <div className="p-8">
           <div className="mb-12 text-center">
-            <h1 className="text-4xl font-metal tracking-[0.2em] mb-4">REGISTER</h1>
+            <h1 className="text-4xl font-metal tracking-[0.2em] mb-4">
+              REGISTER
+            </h1>
             <div className="h-[2px] w-16 bg-black mx-auto"></div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
-              <label htmlFor="name" className="block font-metal text-sm tracking-wider mb-2">
+              <label
+                htmlFor="name"
+                className="block font-metal text-sm tracking-wider mb-2"
+              >
                 NAME
               </label>
               <div className="relative">
@@ -88,7 +96,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block font-metal text-sm tracking-wider mb-2">
+              <label
+                htmlFor="email"
+                className="block font-metal text-sm tracking-wider mb-2"
+              >
                 EMAIL
               </label>
               <div className="relative">
@@ -110,7 +121,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block font-metal text-sm tracking-wider mb-2">
+              <label
+                htmlFor="password"
+                className="block font-metal text-sm tracking-wider mb-2"
+              >
                 PASSWORD
               </label>
               <div className="relative">
@@ -143,7 +157,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block font-metal text-sm tracking-wider mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block font-metal text-sm tracking-wider mb-2"
+              >
                 CONFIRM PASSWORD
               </label>
               <div className="relative">
@@ -164,8 +181,8 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isLoading}
               className="w-full px-4 py-3 bg-black text-white font-metal tracking-wider
                 hover:bg-opacity-80 transition-all duration-200 flex items-center justify-center gap-2
@@ -178,7 +195,7 @@ export default function RegisterPage() {
             </button>
 
             <p className="text-center font-metal text-sm tracking-wider">
-              ALREADY HAVE AN ACCOUNT?{' '}
+              ALREADY HAVE AN ACCOUNT?{" "}
               <Link
                 href="/login"
                 className="underline hover:opacity-70 transition-opacity"
@@ -190,5 +207,5 @@ export default function RegisterPage() {
         </div>
       </motion.div>
     </div>
-  )
+  );
 }

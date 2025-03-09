@@ -8,7 +8,7 @@ import { LayoutDashboard, ShoppingBag, Users, Settings, BarChart3, Package, LogO
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
   { icon: ShoppingBag, label: 'Products', href: '/dashboard/products' },
-  { icon: Users, label: 'Customers', href: '/dashboard/customers' },
+  { icon: Users, label: 'Users', href: '/dashboard/users' },
   { icon: Package, label: 'Orders', href: '/dashboard/orders' },
   { icon: ShoppingBasketIcon, label: 'New Arrivals', href: '/dashboard/new-arrival' },
   { icon: BarChart3, label: 'Catalog', href: '/dashboard/catalog' },

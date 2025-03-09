@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation"
 import { useContext, useState } from "react"
 import { AuthContext } from "./AuthSessionProvider"
 import { Menu, X } from "lucide-react"
+import { FaTshirt } from "react-icons/fa";
+
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -56,6 +58,9 @@ export default function Navbar() {
         <div className="flex-1 flex justify-end gap-4">
           {user ? (
             <>
+              <Link href="/order" className="hover:opacity-70 transition-opacity">
+                <FaTshirt size={20} />
+              </Link>
               <Link href="/cart" className="hover:opacity-70 transition-opacity">
                 <FaShoppingBag size={20} />
               </Link>
