@@ -1,24 +1,22 @@
-"use client";
+"use client"
 
-import { useContext, useState } from "react";
-import { FaShippingFast, FaCheckCircle, FaRedo } from "react-icons/fa";
-import { ImageGallery } from "../../../components/image-gallery";
-import { SizeSelector } from "../../../components/size-selector";
-import { QuantityPicker } from "../../../components/quantity-picker";
-import { addToCart } from "../../../app/store/features/cart-slice";
-import { useAppDispatch } from "../../../app/store/hooks";
-import { AuthContext } from "../../../components/AuthSessionProvider";
+import { useContext, useState } from "react"
+import { FaShippingFast, FaCheckCircle, FaRedo } from "react-icons/fa"
+import { ImageGallery } from "../../../components/image-gallery"
+import { SizeSelector } from "../../../components/size-selector"
+import { QuantityPicker } from "../../../components/quantity-picker"
+import { AuthContext } from "../../../components/AuthSessionProvider"
+import { toast } from "react-toastify"
 
 export default function ProductDetails({ product }) {
-  const dispatch = useAppDispatch();
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const { user } = useContext(AuthContext);
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [quantity, setQuantity] = useState(1)
+  const { user } = useContext(AuthContext)
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert("Please select a size");
-      return;
+      toast.error("Please select a size")
+      return
     }
 
     const cartItem = {
@@ -29,11 +27,30 @@ export default function ProductDetails({ product }) {
       size: selectedSize || "",
       quantity: quantity.toString(),
       email: user?.email,
-    };
+    }
 
-    // console.log(cartItem);
-    dispatch(addToCart(cartItem));
-  };
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
+
+    // Check if item already exists in cart
+    const existingItemIndex = existingCart.findIndex(
+      (item) => item.product_id === cartItem.product_id && item.size === cartItem.size,
+    )
+
+    if (existingItemIndex !== -1) {
+      // Update quantity if item already exists
+      const newQuantity = Number.parseInt(existingCart[existingItemIndex].quantity) + Number.parseInt(cartItem.quantity)
+      existingCart[existingItemIndex].quantity = newQuantity.toString()
+    } else {
+      // Add new item to cart
+      existingCart.push(cartItem)
+    }
+
+    // Save updated cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(existingCart))
+
+    toast.success("Item added to cart!")
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -48,27 +65,16 @@ export default function ProductDetails({ product }) {
           <div className="space-y-8">
             {/* Product Info */}
             <div className="space-y-4">
-              <h1 className="font-bold text-4xl tracking-wide">
-                {product.name}
-              </h1>
-              <p className="font-semibold text-2xl text-gray-800">
-                ${product.price}
-              </p>
-              <p className="text-gray-600 leading-relaxed">
-                {product.description || "No description available."}
-              </p>
+              <h1 className="font-bold text-4xl tracking-wide">{product.name}</h1>
+              <p className="font-semibold text-2xl text-gray-800">${product.price}</p>
+              <p className="text-gray-600 leading-relaxed">{product.description || "No description available."}</p>
             </div>
 
             {/* Size Selector */}
-            <SizeSelector
-              sizes={product.sizes || []}
-              onChange={(size) => setSelectedSize(size)}
-            />
+            <SizeSelector sizes={product.sizes || []} onChange={(size) => setSelectedSize(size)} />
 
             {/* Quantity Picker */}
-            <QuantityPicker
-              onChange={(newQuantity) => setQuantity(newQuantity)}
-            />
+            <QuantityPicker onChange={(newQuantity) => setQuantity(newQuantity)} />
 
             {/* Add to Cart Button */}
             <button
@@ -97,5 +103,6 @@ export default function ProductDetails({ product }) {
         </div>
       </div>
     </main>
-  );
+  )
 }
+

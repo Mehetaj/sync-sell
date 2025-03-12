@@ -21,9 +21,9 @@ export function Sidebar() {
   return (
     <div className="fixed left-0 top-0 bottom-0 w-64 bg-black text-white p-4 flex flex-col">
       {/* Logo */}
-      <div className="py-6 px-4">
+      <Link href="/" className="py-6 px-4">
         <h1 className="font-metal text-2xl tracking-wider text-center">SYNC</h1>
-      </div>
+      </Link>
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1">

@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -10,7 +10,7 @@ import {
   User,
   getAuth,
 } from 'firebase/auth';
-import { app } from '../../firebae';
+import { app } from '../lib/firebaseclient';
 
 
 
@@ -71,4 +71,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+
+
 export default AuthProvider;
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

@@ -1,31 +1,20 @@
-import { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "next/router";
+'use client'
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuth } from "../AuthSessionProvider";
 
-const withAuth = (Component) => {
-    return function ProtectedComponent(props) {
-        const [loading, setLoading] = useState(true);
-        const [user, setUser] = useState(null);
-        const router = useRouter();
-        const auth = getAuth();
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
-        useEffect(() => {
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                if (!user) {
-                    router.push("/login"); // Redirect if not authenticated
-                } else {
-                    setUser(user);
-                }
-                setLoading(false);
-            });
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/login");
+    }
+  }, [user, loading, router]);
 
-            return () => unsubscribe();
-        }, [auth, router]);
-
-        if (loading) return <p>Loading...</p>; // Prevent flicker
-
-        return user ? <Component {...props} /> : null;
-    };
+  if (loading) return <p>Loading...</p>;
+  return user ? children : null;
 };
 
-export default withAuth;
+export default ProtectedRoute;
