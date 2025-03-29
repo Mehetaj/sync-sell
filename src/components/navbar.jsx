@@ -35,8 +35,7 @@ export default function Navbar() {
     { name: "SHOP", href: "/shop" },
     { name: "NEW ARRIVAL", href: "/new-arrivals" },
     { name: "CONTACT", href: "/contact" },
-    { name: "ABOUT", href: "/about" },
-    { name: "PRE ORDER", href: "/pre-order" },
+    { name: "ABOUT", href: "/about" }
   ]
 
   return (
@@ -51,7 +50,7 @@ export default function Navbar() {
 
         {/* Logo - centered on all screen sizes */}
         <Link href="/" className="flex-1 text-center">
-          <h1 className="text-4xl md:text-5xl font-metal tracking-[0.15em]">SynC</h1>
+          <h1 className="text-4xl md:text-5xl font-metal tracking-[0.15em]">Blacked Out</h1>
         </Link>
 
         {/* User/Cart icons - right aligned */}

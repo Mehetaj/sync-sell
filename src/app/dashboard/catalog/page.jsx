@@ -3,12 +3,10 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify";
 import { Plus } from "lucide-react";
 import { deleteCatalog, fetchCatalogs } from "../../store/features/catalog-slice";
 import CatalogTable from '../../../components/table/catalog-table'
 import { Pagination } from '../../../components/pagination'
-import { RootState } from "../../store";
 
 
 const CatalogPage = () => {
@@ -22,10 +20,8 @@ const CatalogPage = () => {
     const handleDelete = async (id) => {
         try {
             await dispatch(deleteCatalog(id));
-            toast.success("Catalog item deleted successfully");
         } catch (err) {
             console.error("Error deleting catalog item:", err);
-            toast.error("Failed to delete the catalog item.");
         }
     };
 

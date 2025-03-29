@@ -1,28 +1,32 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNewArrivals } from "../store/features/new-arrival-slice";
 import NewArrivalCard from "../../components/new-arrival-card";
 
 export default function NewArrivals() {
-  const dispatch = useDispatch(); // Use AppDispatch type
+  const dispatch = useDispatch();
   const { items: products, loading, error } = useSelector(
     (state) => state.newArrival
   );
 
+  const [visibleItems, setVisibleItems] = useState(6);
+
   useEffect(() => {
-    dispatch(fetchNewArrivals()); // Dispatch correctly typed async thunk
+    dispatch(fetchNewArrivals());
   }, [dispatch]);
+
+  const loadMore = () => {
+    setVisibleItems((prev) => prev + 3);
+  };
 
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.1 },
     },
   };
 
@@ -63,7 +67,7 @@ export default function NewArrivals() {
           animate="show"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
         >
-          {products.map((product, index) => (
+          {products.slice(0, visibleItems).map((product, index) => (
             <motion.div key={product._id || index} variants={item}>
               <NewArrivalCard product={product} />
             </motion.div>
@@ -71,16 +75,21 @@ export default function NewArrivals() {
         </motion.div>
 
         {/* "Load More" Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-16"
-        >
-          <button className="font-metal bg-black text-white px-8 py-3 tracking-wider hover:bg-gray-800 transition-colors">
-            LOAD MORE
-          </button>
-        </motion.div>
+        {products.length > visibleItems && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center mt-16"
+          >
+            <button
+              onClick={loadMore}
+              className="font-metal bg-black text-white px-8 py-3 tracking-wider hover:bg-gray-800 transition-colors"
+            >
+              LOAD MORE
+            </button>
+          </motion.div>
+        )}
       </div>
     </div>
   );

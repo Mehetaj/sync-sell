@@ -4,18 +4,29 @@ import { toast } from "react-toastify"
 
 // Initial state
 const initialState = {
-  orders: [],
+  orders: [], // Stores all orders
+  userOrders: {}, // Stores user-specific order (single object)
   loading: false,
   error: null,
 }
 
 // Async Thunks
 
+// Fetch orders for a specific user
+export const fetchUserOrders = createAsyncThunk("orders/fetchUserOrders", async (email, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`/api/order?email=${email}`)
+    return response.data.orders // Expecting an object
+  } catch (error) {
+    return rejectWithValue(error.response?.data?.message || "Failed to fetch your orders")
+  }
+})
+
 // Fetch all orders
 export const fetchOrders = createAsyncThunk("orders/fetchOrders", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get("/api/order")
-    return response.data.orders
+    const response = await axios.get(`/api/order`)
+    return response.data.orders // Expecting an array
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || "Failed to fetch orders")
   }
@@ -24,9 +35,8 @@ export const fetchOrders = createAsyncThunk("orders/fetchOrders", async (_, { re
 // Add a new order
 export const addOrder = createAsyncThunk("orders/addOrder", async (newOrder, { rejectWithValue }) => {
   try {
-    await axios.post("/api/order", newOrder)
-    const response = await axios.get("/api/order") // Fetch updated orders list
-    return response.data.orders
+    const response = await axios.post("/api/order", newOrder)
+    return response.data.order
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || "Failed to place order")
   }
@@ -35,9 +45,8 @@ export const addOrder = createAsyncThunk("orders/addOrder", async (newOrder, { r
 // Edit an existing order
 export const editOrder = createAsyncThunk("orders/editOrder", async ({ updatedOrder, id }, { rejectWithValue }) => {
   try {
-    await axios.patch(`/api/order/${id}`, updatedOrder)
-    const response = await axios.get("/api/order")
-    return response.data.orders
+    const response = await axios.patch(`/api/order/${id}`, updatedOrder)
+    return response.data.order
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || "Failed to update order")
   }
@@ -47,8 +56,7 @@ export const editOrder = createAsyncThunk("orders/editOrder", async ({ updatedOr
 export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id, { rejectWithValue }) => {
   try {
     await axios.delete(`/api/order/${id}`)
-    const response = await axios.get("/api/order")
-    return response.data.orders
+    return id
   } catch (error) {
     return rejectWithValue(error.response?.data?.message || "Failed to delete order")
   }
@@ -57,17 +65,35 @@ export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id, { r
 const orderSlice = createSlice({
   name: "orders",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUserOrders: (state) => {
+      state.userOrders = {} // Clear user orders
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // Fetch Orders
+      // Fetch User Orders
+      .addCase(fetchUserOrders.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchUserOrders.fulfilled, (state, action) => {
+        state.loading = false
+        state.userOrders = action.payload // Expecting an object
+      })
+      .addCase(fetchUserOrders.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload || "Failed to fetch your orders"
+      })
+
+      // Fetch all Orders (✅ Fixed)
       .addCase(fetchOrders.pending, (state) => {
         state.loading = true
         state.error = null
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.loading = false
-        state.orders = action.payload
+        state.orders = action.payload // ✅ Corrected
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false
@@ -81,7 +107,8 @@ const orderSlice = createSlice({
       })
       .addCase(addOrder.fulfilled, (state, action) => {
         state.loading = false
-        state.orders = action.payload
+        state.orders.push(action.payload) // ✅ Add to global orders
+        state.userOrders = action.payload // ✅ Update latest user order
         toast.success("Order placed successfully")
       })
       .addCase(addOrder.rejected, (state, action) => {
@@ -97,7 +124,13 @@ const orderSlice = createSlice({
       })
       .addCase(editOrder.fulfilled, (state, action) => {
         state.loading = false
-        state.orders = action.payload
+        const updatedOrder = action.payload
+        state.orders = state.orders.map((order) =>
+          order._id === updatedOrder._id ? updatedOrder : order
+        )
+        if (state.userOrders._id === updatedOrder._id) {
+          state.userOrders = updatedOrder // ✅ Update user order
+        }
         toast.success("Order updated successfully")
       })
       .addCase(editOrder.rejected, (state, action) => {
@@ -113,7 +146,11 @@ const orderSlice = createSlice({
       })
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.loading = false
-        state.orders = action.payload
+        const deletedOrderId = action.payload
+        state.orders = state.orders.filter((order) => order._id !== deletedOrderId)
+        if (state.userOrders._id === deletedOrderId) {
+          state.userOrders = {} // Clear deleted user order
+        }
         toast.success("Order deleted successfully")
       })
       .addCase(deleteOrder.rejected, (state, action) => {
@@ -124,5 +161,5 @@ const orderSlice = createSlice({
   },
 })
 
+export const { clearUserOrders } = orderSlice.actions
 export default orderSlice.reducer
-

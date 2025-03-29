@@ -23,7 +23,7 @@ export default function ProductCard({ product }) {
             src={image}
             alt={name || " "}
             fill
-            className="object-cover filter grayscale group-hover:grayscale-0 transition-all duration-300"
+            className="object-cover"
             sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           />
         </div>

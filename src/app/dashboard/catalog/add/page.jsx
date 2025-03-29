@@ -41,10 +41,8 @@ const AddCatalogPage = () => {
 
     try {
       await dispatch(addCatalog(formData)); // Replace this with your action to add the catalog
-      toast.success('Catalog added successfully!');
       setIsLoading(false);
     } catch (error) {
-      toast.error(`Failed to add catalog. Please try again.${error}`);
       setIsLoading(false);
     }
   };
@@ -99,6 +97,8 @@ const AddCatalogPage = () => {
                     <Image
                       src={imagePreview}
                       alt="Image Preview"
+                      width={128}
+                      height={128}
                       className="w-32 h-32 object-cover rounded-md border"
                     />
                   </div>

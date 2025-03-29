@@ -7,10 +7,9 @@ import { motion } from "framer-motion"
 export default function HomePage() {
   const menuItems = [
     { name: "SHOP", href: "/shop" },
-    { name: "CATALOG", href: "/catalog" },
+    { name: "ABOUT", href: "/about" },
     { name: "CONTACT", href: "/contact" },
-    { name: "NEW ARRIVALS", href: "/new-arrivals" },
-    { name: "PRE ORDER", href: "/pre-order" }
+    { name: "NEW ARRIVALS", href: "/new-arrivals" }
   ]
 
   const containerVariants = {
@@ -37,8 +36,8 @@ export default function HomePage() {
         className="pt-8"
       >
         <h1 className="text-7xl font-metal tracking-[0.15em] text-center relative">
-          <span className="absolute -inset-1 blur-sm opacity-30">SynC</span>
-          SynC
+          <span className="absolute -inset-1 blur-sm opacity-30">Blacked Out</span>
+          Blacked Out
         </h1>
       </motion.div>
 
@@ -113,8 +112,8 @@ export default function HomePage() {
           transition={{ delay: 1 }}
           className="text-[10px] text-center space-y-1 tracking-wider text-neutral-500 font-metal"
         >
-          <p>© 2024 SYNC</p>
-          <p>DESIGNED BY SYNC CREATIVE</p>
+          <p>© 2024 Blacked Out</p>
+          <p>DESIGNED BY Mehataz</p>
         </motion.div>
       </div>
     </div>
