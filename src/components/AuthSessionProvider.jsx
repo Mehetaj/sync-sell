@@ -7,12 +7,10 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  User,
   getAuth,
 } from 'firebase/auth';
-import { app } from '../lib/firebaseclient';
 
-
+import app from '../lib/firebaseClient'
 
 export const AuthContext = createContext(null);
 
