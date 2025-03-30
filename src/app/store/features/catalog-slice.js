@@ -11,25 +11,25 @@ const initialState = {
 
 // Async Thunks
 export const fetchCatalogs = createAsyncThunk("catalog/fetchCatalogs", async () => {
-    const response = await axios.get("http://localhost:3000/api/catalog");
+    const response = await axios.get("/api/catalog");
     return response.data.Catalogs;
 });
 
 export const addCatalog = createAsyncThunk("catalog/addCatalog", async (catalog) => {
-    await axios.post("http://localhost:3000/api/catalog", catalog);
-    const response = await axios.get("http://localhost:3000/api/catalog");
+    await axios.post("/api/catalog", catalog);
+    const response = await axios.get("/api/catalog");
     return response.data.Catalogs;
 });
 
 export const editCatalog = createAsyncThunk("catalog/edit-catalog", async ({ updatedCatalog, id }) => {
-    await axios.patch(`http://localhost:3000/api/catalog/${id}`, updatedCatalog);
-    const response = await axios.get("http://localhost:3000/api/catalog");
+    await axios.patch(`/api/catalog/${id}`, updatedCatalog);
+    const response = await axios.get("/api/catalog");
     return response.data.Catalogs;
 });
 
 export const deleteCatalog = createAsyncThunk("catalog/delete-catalog", async (id) => {
-    await axios.delete(`http://localhost:3000/api/catalog/${id}`);
-    const response = await axios.get("http://localhost:3000/api/catalog");
+    await axios.delete(`/api/catalog/${id}`);
+    const response = await axios.get("/api/catalog");
     return response.data.Catalogs;
 });
 

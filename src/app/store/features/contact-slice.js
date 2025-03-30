@@ -12,19 +12,19 @@ const initialState = {
 
 // Async Thunks
 export const fetchContacts = createAsyncThunk("contacts/fetchContacts", async () => {
-  const response = await axios.get("http://localhost:3000/api/contact");
+  const response = await axios.get("/api/contact");
   return response.data.contacts;
 });
 
 export const addContact = createAsyncThunk("contacts/addContact", async (newContact) => {
-  await axios.post("http://localhost:3000/api/contact", newContact);
-  const response = await axios.get("http://localhost:3000/api/contact");
+  await axios.post("/api/contact", newContact);
+  const response = await axios.get("/api/contact");
   return response.data.contacts;
 });
 
 export const deleteContact = createAsyncThunk("contacts/deleteContact", async (id) => {
-  await axios.delete(`http://localhost:3000/api/contact/${id}`);
-  const response = await axios.get("http://localhost:3000/api/contact");
+  await axios.delete(`/api/contact/${id}`);
+  const response = await axios.get("/api/contact");
   return response.data.contacts;
 });
 
