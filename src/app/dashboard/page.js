@@ -73,7 +73,7 @@ function DashboardPage() {
                   </p>
                 </div>
                 <div className="hidden sm:block text-right text-sm text-gray-500">
-                  ${order.total?.toFixed(2)}
+                ৳{order.total?.toFixed(2)}
                 </div>
               </div>
             ))}

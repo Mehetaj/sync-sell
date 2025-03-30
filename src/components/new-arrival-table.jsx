@@ -46,7 +46,7 @@ const NewArrivalTable = ({ arrivals, onDelete }) => {
                 </div>
               </td>
               <td className="px-6 py-4 text-sm">{arrival.category}</td>
-              <td className="px-6 py-4 text-sm">{arrival.price}</td>
+              <td className="px-6 py-4 text-sm">৳{arrival.price}</td>
               <td className="px-6 py-4 text-sm">{arrival.launchDate}</td>
               <td className="px-6 py-4">
                 <div className="flex justify-end gap-3">

@@ -175,22 +175,22 @@ export default function CheckoutPage() {
                     <span>
                       {item.name} ({item.size}) x{item.quantity}
                     </span>
-                    <span>${(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
+                    <span>৳{(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
               <div className="h-[1px] bg-gray-200 my-4"></div>
               <div className="flex justify-between mt-2">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>৳{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping:</span>
-                <span>${shipping.toFixed(2)}</span>
+                <span>৳{shipping.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-lg mt-2">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>৳{total.toFixed(2)}</span>
               </div>
             </div>
             {loading ? (

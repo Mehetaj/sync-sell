@@ -31,7 +31,7 @@ export default function NewArrivalCard({ product }) {
       {/* Product Info */}
       <div className="mt-4 text-center space-y-2">
         {name && <h3 className="font-bold tracking-wider text-lg">{name}</h3>}
-        {price && <p className="tracking-wider text-sm">${price}</p>}
+        {price && <p className="tracking-wider text-sm">৳{price}</p>}
         {launchDate && (
           <p className="text-xs text-gray-600 tracking-wider">
             Launched: {new Date(launchDate).toLocaleDateString()}

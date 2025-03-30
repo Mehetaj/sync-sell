@@ -125,11 +125,11 @@ export function ProductForm() {
           required
         />
 
-        <label>Price ($)</label>
+        <label>Price (৳)</label>
         <input
           type="number"
           name="price"
-          placeholder="Price ($)"
+          placeholder="Price (৳)"
           value={state.price}
           onChange={handleInputChange}
           className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"

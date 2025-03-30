@@ -61,7 +61,7 @@ const OrderPage = () => {
           <strong>Status:</strong> {orderData?.status}
         </p>
         <p>
-          <strong>Total:</strong> ${orderData?.total}
+          <strong>Total:</strong> ৳{orderData?.total}
         </p>
       </div>
 
@@ -85,7 +85,7 @@ const OrderPage = () => {
               </p>
               <p>Size: {item.size}</p>
               <p>Quantity: {item.quantity}</p>
-              <p>Price: ${item.price}</p>
+              <p>Price: ৳{item.price}</p>
             </div>
           </div>
         ))}

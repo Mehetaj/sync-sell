@@ -134,7 +134,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                     {order.email}
                   </td>
                   <td className="px-6 py-4 text-sm dark:text-gray-300">
-                    $
+                  ৳
                     {typeof order.total === "number"
                       ? order.total.toFixed(2)
                       : "0.00"}
@@ -312,7 +312,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                                   order.paymentMethod.slice(1)}
                               </p>
                               <p>
-                                Total: $
+                                Total: ৳
                                 {typeof order.total === "number"
                                   ? order.total.toFixed(2)
                                   : "0.00"}
@@ -371,7 +371,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 space-y-1">
                                         <p>Quantity: {item.quantity}</p>
                                         {item.size && <p>Size: {item.size}</p>}
-                                        <p>Price: ${item.price.toFixed(2)}</p>
+                                        <p>Price: ৳{item.price.toFixed(2)}</p>
                                       </div>
                                     </div>
                                   </div>
@@ -417,7 +417,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                       {order.status}
                     </span>
                     <span className="text-sm font-medium dark:text-gray-300">
-                      $
+                    ৳
                       {typeof order.total === "number"
                         ? order.total.toFixed(2)
                         : "0.00"}
@@ -590,7 +590,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                               order.paymentMethod.slice(1)}
                           </p>
                           <p>
-                            Total: $
+                            Total: ৳
                             {typeof order.total === "number"
                               ? order.total.toFixed(2)
                               : "0.00"}
@@ -651,7 +651,7 @@ export function OrderTable({ orders, onDelete, onUpdateStatus }) {
                                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 space-y-0.5">
                                     <p>Quantity: {item.quantity}</p>
                                     {item.size && <p>Size: {item.size}</p>}
-                                    <p>Price: ${item.price.toFixed(2)}</p>
+                                    <p>Price: ৳{item.price.toFixed(2)}</p>
                                   </div>
                                 </div>
                               </div>

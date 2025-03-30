@@ -100,7 +100,7 @@ export default function CartPage() {
                         <FiX className="w-5 h-5" />
                       </button>
                     </div>
-                    <p className="font-metal tracking-wider mt-2">${Number(item.price).toFixed(2)}</p>
+                    <p className="font-metal tracking-wider mt-2">৳{Number(item.price).toFixed(2)}</p>
                     <QuantityPicker
                       initialQuantity={Number(item.quantity)}
                       onChange={(newQuantity) => handleQuantityChange(item._id || item.product_id, newQuantity)}
@@ -116,16 +116,16 @@ export default function CartPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between font-metal tracking-wider">
                     <span>SUBTOTAL</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>৳{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-metal tracking-wider">
                     <span>SHIPPING</span>
-                    <span>${shipping.toFixed(2)}</span>
+                    <span>৳{shipping.toFixed(2)}</span>
                   </div>
                   <div className="h-[1px] bg-black"></div>
                   <div className="flex justify-between font-metal tracking-wider text-lg">
                     <span>TOTAL</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>৳{total.toFixed(2)}</span>
                   </div>
                 </div>
                 <button onClick={() => console.log("Proceeding to checkout with", items)} className="btn-primary">
